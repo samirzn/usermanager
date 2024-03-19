@@ -107,5 +107,6 @@ if __name__ == '__main__':
     expiration_thread = threading.Thread(target=check_expired_users)
     expiration_thread.start()
 
-    # Run the Flask app
-    app.run(debug=True,  host='0.0.0.0', port=80)
+    # Run the Flask app using Gunicorn
+    # Use the command: gunicorn -w 4 -b 0.0.0.0:80 app:app
+
