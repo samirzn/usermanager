@@ -101,12 +101,29 @@ def edit_user(user_id):
             return render_template('edit_user.html', user=user)
         else:
             return 'User not found', 404
+# Login route
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form['username']
+    password = request.form['password']
+
+    if username == 'samir_zn' and password == 'love000':
+        session['logged_in'] = True
+        session.permanent = True  # Set the session to expire after a certain time (configurable)
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('home'))
+
+# Logout route
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     # Start the thread to check for expired users
     expiration_thread = threading.Thread(target=check_expired_users)
     expiration_thread.start()
 
-    # Run the Flask app using Gunicorn
-    # Use the command: gunicorn -w 4 -b 0.0.0.0:80 app:app
-
+    # Run the Flask app
+    app.run(debug=True,  host='0.0.0.0', port=80)
